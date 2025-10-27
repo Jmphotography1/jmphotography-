@@ -1,0 +1,64 @@
+
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin — JMPhotography</title>
+<link rel="stylesheet" href="../assets/css/styles.css"></head>
+<body>
+  <div class="container">
+    <header style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:12px"><img src="../assets/images/logo.png" style="width:60px"><div><h2 style="margin:0">Admin — JMPhotography</h2><div class="small">Private area — password protected</div></div></div>
+      <div><a href="../index.html">Back to site</a></div>
+    </header>
+
+    <div id="login-area" class="card">
+      <div class="label">Enter admin password</div>
+      <input id="pw" class="input" type="password" placeholder="Password">
+      <div style="margin-top:8px"><button class="btn" id="loginBtn">Unlock Admin</button></div>
+      <div class="small" style="margin-top:10px">Note: This is client-side protection for convenience. For stronger security, use Firebase or server auth.</div>
+    </div>
+
+    <div id="admin-panel" style="display:none">
+      <section class="section card">
+        <h3>Create Event / Upload & Watermark</h3>
+        <div class="form-row">
+          <input id="eventTitle" class="input" placeholder="Event title (e.g. Football — 2025-10-01)">
+          <input id="eventDate" class="input" placeholder="Date (YYYY-MM-DD)">
+          <label class="label">Upload photos to watermark</label>
+          <input id="files" type="file" multiple accept="image/*">
+          <label class="label">Watermark settings</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <select id="pos" class="input" style="width:160px">
+              <option value="br">Bottom right</option>
+              <option value="bl">Bottom left</option>
+              <option value="tr">Top right</option>
+              <option value="tl">Top left</option>
+              <option value="center">Center</option>
+            </select>
+            <input id="scale" class="input" type="number" value="12" min="5" max="40" style="width:90px"> <div class="small">Logo size (%)</div>
+          </div>
+          <div style="margin-top:10px"><button id="processBtn" class="btn">Process & Download Watermarked Images</button></div>
+        </div>
+        <div id="preview" style="margin-top:12px"></div>
+      </section>
+
+      <section class="section card">
+        <h3>Export for Upload</h3>
+        <p class="small">After processing, click "Export" to download a ZIP ready to add to your repo under /galleries/<em>event-id</em>.</p>
+        <div style="margin-top:8px"><button id="exportZip" class="btn">Export ZIP (images + manifest)</button></div>
+        <div id="exportStatus" class="small" style="margin-top:10px"></div>
+      </section>
+
+      <section class="section card">
+        <h3>Instructions</h3>
+        <ol class="small">
+          <li>Use this admin panel to watermark and download images for an event.</li>
+          <li>Export the ZIP, then upload the folder into your GitHub repository <code>/galleries/&lt;event-id&gt;/</code> and update <code>galleries.json</code> with the event metadata.</li>
+          <li>To change the admin password, edit <code>assets/js/admin.js</code> in your repo and change <code>ADMIN_PASSWORD</code>.</li>
+        </ol>
+      </section>
+    </div>
+  </div>
+
+<script src="../assets/js/admin.js"></script>
+</body>
+</html>

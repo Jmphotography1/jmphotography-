@@ -1,0 +1,55 @@
+
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gallery — JMPhotography</title>
+<link rel="stylesheet" href="assets/css/styles.css"></head>
+<body>
+  <header class="header container">
+    <div class="brand"><img src="assets/images/logo.png" alt="logo"><div><h1>JMPhotography</h1><div class="tag">Every Frame Tells a Story</div></div></div>
+    <nav class="nav"><a href="index.html">Home</a><a href="about.html">About</a><a href="gallery.html">Gallery</a><a href="contact.html">Contact</a></nav>
+  </header>
+  <main class="container">
+    <section class="section">
+      <h2>Galleries</h2>
+      <p class="small">Click an event to view photos. (To add new events, use the Admin panel.)</p>
+      <div id="galleries" class="gallery-grid"></div>
+    </section>
+    <section id="event-view" class="section" style="display:none">
+      <h3 id="event-title"></h3>
+      <div id="event-images" class="grid"></div>
+      <p><a href="gallery.html">Back to galleries</a></p>
+    </section>
+  </main>
+  <footer class="footer">© <span id="year3"></span> JMPhotography — All rights reserved.</footer>
+  <script>
+  async function loadGalleries(){
+    try{
+      const res = await fetch('galleries.json');
+      const data = await res.json();
+      const cont = document.getElementById('galleries');
+      cont.innerHTML='';
+      data.forEach(g=>{
+        const el = document.createElement('div');
+        el.className='gallery-thumb card';
+        el.innerHTML = `<div><strong>${g.title}</strong><div class="small">${g.date}</div><div style="margin-top:8px"><a href="#" data-id="${g.id}" class="btn">View</a></div></div>`;
+        cont.appendChild(el);
+      });
+      // attach view handlers
+      document.querySelectorAll('[data-id]').forEach(a=>a.addEventListener('click',e=>{
+        e.preventDefault(); const id=a.dataset.id; openEvent(id,data);
+      }));
+    }catch(err){console.error(err); document.getElementById('galleries').innerHTML='<p class="small">No galleries yet.</p>'}
+  }
+  function openEvent(id,data){
+    const g = data.find(x=>x.id===id); if(!g) return;
+    document.getElementById('event-title').textContent=g.title; const images = g.images || [];
+    const ev = document.getElementById('event-images'); ev.innerHTML='';
+    images.forEach(src=>{ const c=document.createElement('div'); c.className='card'; c.innerHTML=`<img src="${src}" alt="">`; ev.appendChild(c);});
+    document.getElementById('event-view').style.display='block';
+    window.scrollTo(0,0);
+  }
+  loadGalleries();
+  document.getElementById('year3').textContent=new Date().getFullYear();
+  </script>
+</body>
+</html>
